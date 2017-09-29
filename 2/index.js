@@ -13,5 +13,4 @@ class RandomWord {
 }
 
 const word = new RandomWord()
-
 console.log(word.newWord())
