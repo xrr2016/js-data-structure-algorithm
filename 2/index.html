@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>第2章 数组</title>
+  <link rel="stylesheet"
+  href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script src="index.js"></script>
+  <style>
+    body {
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: flex-start;
+      align-items: center;
+      font-size: 14px;
+    }
+    code {
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <h2>第2章 数组</h2>
+  <ol>
+    <li>
+      创建一个记录学生成绩的对象，提供一个添加成绩的方法，以及一个显示学生平均成绩的方法。
+      <pre>
+        <code class="JavaScript">
+            class StudentGrades {
+              constructor (data = []) {
+                this.data = data
+              }
+              add (grade) {
+                this.data.push(grade)
+                return this.data.join(',')
+              }
+              avg () {
+                return (this.data.reduce((pre, cur) => {
+                  return pre + cur
+                }, 0) / this.data.length).toFixed(2)
+              }
+            }
+            
+            const grade = new StudentGrades([65, 89, 92, 95, 85])
+            console.log(grade.avg())    // 85.20
+            console.log(grade.add(100)) // 18 65,89,92,95,85,100
+            console.log(grade.avg())    // 87.67
+        </code>
+      </pre>
+    </li>
+    <li>
+      将一组单词存储在一个数组中，并按正序和倒序分别显示这些单词
+      <pre>
+        <code class="JavaScript">
+          const words = ['Esther', 'Maribel', 'Jalyn', 'Layla', 'Amina']
+          
+          console.log('正序:', words.join(', '))
+          console.log('倒序:', words.reverse().join(', '))
+        </code>
+      </pre>    
+    </li>
+    <li>修改本章前面出现过的 weekTemps 对象，使它可以使用一个二维数组来存储每月的有用数据。增加一些方法用以显示月平均数，具体某一周平均数和所有周的平均数。</li>
+    <pre>
+      <code class="JavaScript">
+        // before
+        function weekTemps () {
+          this.dataStore = []
+          this.add = add
+          thi.average = average
+        }
+        function add (temp) {
+          this.dataStore.push(temp)
+        }
+        function average () {
+          var total = 0
+          for (var i = 0; i < this.dataStore.length; ++i) {
+            total += this.dataStore[i]
+          }
+          return total / this.dataStore.length
+        }
+
+        var thisWeek = new weekTemps()
+        thisWeek.add(54)
+        thisWeek.add(59)
+        thisWeek.add(43)
+        thisWeek.add(23)
+        thisWeek.add(89)
+        thisWeek.add(45)
+        
+        console.log(thisWeek.average()) // 52.166666666666664
+
+        // after
+        class MonthTemps {
+          constructor (days = 31, temp = 32) {
+            this.days = days
+            this.weeks = Math.ceil(days / 7)
+            this.data = this.matrix(this.weeks, 7, temp)
+          }
+        
+          matrix (rows, cols, initial) {
+            let days = this.days
+            let arr = []
+            for (let i = 0; i < rows; i++) {
+              if (days > cols) {
+                arr[i] = new Array(cols).fill(initial)
+                days -= cols
+              } else {
+                arr[i] = new Array(days).fill(initial)
+              }
+            }
+            return arr
+          }
+          
+          temps () {
+            return this.data.toString()
+          }
+        
+          monthAvg () {
+            let total = 0
+            for (let i = 0; i < this.data.length; i++) {
+              for (let j = 0; j < this.data[i].length; j++) {
+                total += this.data[i][j]
+              }
+            }
+            return (total / this.days).toFixed(2)
+          }
+          
+          weekAvg (week = 1) {
+            week = week -= 1
+            if (week > this.weeks) {
+              return 0
+            }
+            return (this.data[week].reduce((pre, cur) => {
+              return pre + cur
+            }, 0) / this.data[week].length).toFixed(2)
+          }
+        
+          modify (week, day, temp) {
+            week = week -= 1
+            day = day -= 1
+            this.data[week][day] = temp
+          }
+        }
+        
+        const thisMonth = new MonthTemps()
+        
+        console.log(thisMonth.temps()) // 32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32,32
+        console.log(thisMonth.weekAvg(2)) // 32.00
+        console.log(thisMonth.monthAvg()) // 32.00
+      </code>
+    </pre>
+   <li>创建这样一个对象，它将字母存储在一个数组中，并且用一个方法可以将字母连在一起，显示成一个单词。</li> 
+   <pre>
+     <code class="JavaScript">
+      class RandomWord {
+        constructor () {
+          this.letters = ['a', 'b', 'c', 'd', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+        }
+        newWord () {
+          let word = ''
+          let len = Math.floor(Math.random() * 12)
+          while (word.length < len) {
+            word += this.letters[Math.floor(Math.random() * 26)]
+          }
+          return word
+        }
+      }
+      
+      const word = new RandomWord()
+      console.log(word.newWord()) // bxowkp
+      
+     </code>
+   </pre>
+  </ol>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
