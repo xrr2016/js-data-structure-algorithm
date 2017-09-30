@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>第4章 桟</title>
+  <link rel="stylesheet"
+  href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <script src="stack.js"></script>
+  <style>
+    body {
+      display: flex;
+      flex-flow: column wrap;
+      justify-content: flex-start;
+      align-items: center;
+      font-size: 14px;
+    }
+    code {
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <h2>第4章 桟</h2>
+  <pre>
+    <code class="JavaScript">
+      class Stack {
+        constructor (datas = []) {
+          this.datas = datas
+          this.top = datas.length
+        }
+        elements () {
+          return this.datas.join(', ')
+        }
+        push (data) {
+          if (!data) return
+          this.datas[this.top++] = data
+          return true
+        }
+        pop () {
+          return this.datas[--this.top]
+        }
+        peek () {
+          return this.datas[this.top - 1]
+        }
+        length () {
+          return this.top
+        }
+        clear () {
+          this.top = 0
+        }
+      }
+      
+      const peoples = new Stack(['Tremaine', 'Kiana', 'Merritt', 'Kailyn', 'Marcelle'])
+      
+      console.log(peoples.elements(), peoples.peek()) // Tremaine, Kiana, Merritt, Kailyn, Marcelle Marcelle
+      
+      peoples.push('Florian')
+      
+      console.log(peoples.length(), peoples.peek()) // 6 "Florian"
+      
+      peoples.pop()
+      
+      console.log(peoples.length(), peoples.peek()) // 5 "Marcelle"
+      
+      peoples.clear()
+      
+      console.log(peoples.length(), peoples.peek()) // 0 undefined
+      
+    </code>
+  </pre>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
